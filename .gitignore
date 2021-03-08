@@ -16,3 +16,5 @@
 
 #Avoid API keys upload
 .env
+
+node_modules
