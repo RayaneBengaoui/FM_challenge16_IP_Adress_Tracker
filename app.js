@@ -7,4 +7,4 @@ https://geo.ipify.org/api/v1?apiKey=${api_key}&ipAddress=8.8.8.8`;
 //   const dataFetch = await fetch(ipfy_fetch_link);
 // }
 
-console.log(ipfy_fetch_link);
+console.log(api_key);
