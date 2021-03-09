@@ -1,14 +1,21 @@
-let ipfyKey;
-
-async function getIpfyKey() {
-  const result = await fetch("/.netlify/functions/token-hider");
-  const { key } = await result.json();
+async function getIpData() {
+  //Get the IPFY API key from the token-hider file
+  const tokenRequest = await fetch("/.netlify/functions/token-hider");
+  const { key } = await tokenRequest.json();
   let ipfy_fetch_link = `
 https://geo.ipify.org/api/v1?apiKey=${key}&ipAddress=8.8.8.8`;
-  console.log(ipfy_fetch_link);
+
+  // Fetching the IPFY API with the given IP adress
+  const ipfyRequest = await fetch(ipfy_fetch_link);
+  const {
+    location: { country, region, city, timezone },
+    isp,
+  } = await ipfyRequest.json();
+
+  console.log(isp);
 }
 
-getIpfyKey();
+getIpData();
 
 let ip_adress = "";
 
