@@ -9,3 +9,8 @@
 html {
   font-family: "Rubik", sans-serif;
 }
+
+#map-container {
+  width: 600px;
+  height: 600px;
+}
