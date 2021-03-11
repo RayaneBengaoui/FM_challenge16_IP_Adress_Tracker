@@ -9,7 +9,15 @@ const ispText = document.querySelector(".isp");
 const ipInput = document.querySelector("input");
 const searchButton = document.querySelector("button");
 
+const loaderSection = document.querySelector(".loader-container");
+const mapSection = document.querySelector("#map-container");
+
+// Variables
+let isLoading = true;
+
 searchButton.addEventListener("click", () => {
+  isLoading = true;
+
   getIpData(ipInput.value);
 });
 
@@ -24,9 +32,22 @@ function setMapLocation(map, lat, lng) {
 
 function updateInfo(ip, country, region, city, timezone, isp) {
   ipText.textContent = ip;
-  locationText.textContent = `${country}, ${region}, ${city}`;
+  locationText.textContent = `${country},  ${city}`;
   timezoneText.textContent = timezone;
   ispText.textContent = isp;
+}
+
+function setLoader(isLoading) {
+  console.log("CHECK");
+  console.log(loaderSection);
+  console.log(mapSection);
+  if (isLoading) {
+    loaderSection.style.display = "flex";
+    mapSection.style.display = "none";
+  } else {
+    loaderSection.style.display = "none";
+    mapSection.style.display = "block";
+  }
 }
 
 async function getToken() {
@@ -45,6 +66,7 @@ async function getOwnIp() {
 }
 
 async function getIpData(ip) {
+  setLoader(isLoading);
   const key = await getToken();
 
   if (ip === undefined) {
@@ -65,6 +87,8 @@ async function getIpData(ip) {
   updateInfo(ip, country, region, city, timezone, isp);
 
   ipInput.value = "";
+  isLoading = false;
+  setLoader(isLoading);
 }
 
-// setTimeout(getIpData(), 1000);
+setTimeout(getIpData(), 1000);
