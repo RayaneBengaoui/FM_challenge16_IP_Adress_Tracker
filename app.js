@@ -1,9 +1,17 @@
 // DOM Elements
 var map = L.map("map-container");
+
 const ipText = document.querySelector(".ip");
 const locationText = document.querySelector(".location");
 const timezoneText = document.querySelector(".timezone");
 const ispText = document.querySelector(".isp");
+
+const ipInput = document.querySelector("input");
+const searchButton = document.querySelector("button");
+
+searchButton.addEventListener("click", () => {
+  getIpData(ipInput.value);
+});
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
@@ -38,7 +46,6 @@ async function getOwnIp() {
 
 async function getIpData(ip) {
   const key = await getToken();
-  console.log("");
 
   if (ip === undefined) {
     ip = await getOwnIp();
@@ -53,16 +60,11 @@ async function getIpData(ip) {
     isp,
   } = await ipfyRequest.json();
 
+  // Updating UI
   setMapLocation(map, lat, lng);
   updateInfo(ip, country, region, city, timezone, isp);
+
+  ipInput.value = "";
 }
 
-setTimeout(getIpData(), 1000);
-
-// getOwnIp();
-
-let ip_adress = "";
-
-// async function getIpInformation() {
-//   const dataFetch = await fetch(ipfy_fetch_link);
-// }
+// setTimeout(getIpData(), 1000);
