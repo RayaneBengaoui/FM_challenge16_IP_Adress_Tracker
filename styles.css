@@ -13,7 +13,21 @@ html {
 h1 {
   color: white;
   font-weight: 500;
-  margin: 1.5rem 0;
+  margin: 2rem 0;
+}
+
+h2 {
+  font-size: 0.7rem;
+  color: hsl(0, 0%, 59%);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+p {
+  color: hsl(0, 0%, 17%);
+  font-weight: 500;
+  font-size: 1.7rem;
+  padding: 1rem 0;
 }
 
 header {
@@ -23,8 +37,9 @@ header {
   background-size: cover;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  position: relative;
 }
 
 .input-container {
@@ -53,6 +68,36 @@ button {
   border: none;
   background-color: black;
   cursor: pointer;
+}
+
+.info-container {
+  z-index: 10;
+  background: white;
+  position: absolute;
+  bottom: -4.5rem;
+  display: flex;
+  width: 60rem;
+  height: 9rem;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.info-container__box {
+  position: relative;
+  flex-basis: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 2rem;
+}
+
+.border-right::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  height: 4rem;
+  width: 1px;
+  background: lightgray;
 }
 
 #map-container {
