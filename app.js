@@ -1,5 +1,5 @@
 // DOM Elements
-var map = L.map("map-container").setView([51.505, -0.09], 13);
+var map = L.map("map-container");
 
 //change pos
 // map.setView([60.505, -10.09], 13);
@@ -48,7 +48,8 @@ async function getIpData(ip) {
   setMapLocation(map, lat, lng);
 }
 
-getIpData();
+setTimeout(getIpData(), 1000);
+
 // getOwnIp();
 
 let ip_adress = "";
