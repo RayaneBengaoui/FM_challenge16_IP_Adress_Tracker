@@ -1,8 +1,9 @@
 // DOM Elements
 var map = L.map("map-container");
-
-//change pos
-// map.setView([60.505, -10.09], 13);
+const ipText = document.querySelector(".ip");
+const locationText = document.querySelector(".location");
+const timezoneText = document.querySelector(".timezone");
+const ispText = document.querySelector(".isp");
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
@@ -11,6 +12,13 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 function setMapLocation(map, lat, lng) {
   map.setView([lat, lng], 13);
+}
+
+function updateInfo(ip, country, region, city, timezone, isp) {
+  ipText.textContent = ip;
+  locationText.textContent = `${country}, ${region}, ${city}`;
+  timezoneText.textContent = timezone;
+  ispText.textContent = isp;
 }
 
 async function getToken() {
@@ -46,6 +54,7 @@ async function getIpData(ip) {
   } = await ipfyRequest.json();
 
   setMapLocation(map, lat, lng);
+  updateInfo(ip, country, region, city, timezone, isp);
 }
 
 setTimeout(getIpData(), 1000);
