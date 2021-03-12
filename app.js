@@ -8,6 +8,9 @@ const locationText = document.querySelector(".location");
 const timezoneText = document.querySelector(".timezone");
 const ispText = document.querySelector(".isp");
 
+const errorContainer = document.querySelector(".error-container");
+const info_boxes = document.querySelectorAll(".info-container__box");
+
 const ipInput = document.querySelector("input");
 const searchButton = document.querySelector("button");
 
@@ -73,6 +76,16 @@ function setLoader(isLoading) {
   }
 }
 
+function resetError() {
+  // loaderSection.style.display = "none";
+  // mapSection.style.display = "none";
+  errorContainer.classList.remove("active-error");
+
+  info_boxes.forEach((box) => {
+    box.style.display = "flex";
+  });
+}
+
 async function getToken() {
   //Get the IPFY API key from the token-hider file
   const tokenRequest = await fetch("/.netlify/functions/token-hider");
@@ -93,6 +106,7 @@ async function getIpData(input) {
   let domain;
   let ipfy_fetch_link;
 
+  resetError();
   setLoader(isLoading);
 
   const key = await getToken();
@@ -111,7 +125,11 @@ async function getIpData(input) {
       } else {
         loaderSection.style.display = "none";
         mapSection.style.display = "none";
-        window.alert("Enter a valid IP/domain");
+        errorContainer.classList.add("active-error");
+
+        info_boxes.forEach((box) => {
+          box.style.display = "none";
+        });
 
         return;
       }
