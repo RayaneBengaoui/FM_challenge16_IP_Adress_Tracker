@@ -38,7 +38,17 @@ function setMapLocation(map, lat, lng) {
   }, 100);
 }
 
-function updateInfo(ip, country, region, city, timezone, isp) {
+function isValidIpv4Addr(ip) {
+  return /^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/.test(
+    ip
+  );
+}
+
+function isValidDomainName(name) {
+  return /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/.test(name);
+}
+
+function updateInfo(ip, country, city, timezone, isp) {
   ipText.textContent = ip;
   locationText.textContent = `${country},  ${city}`;
   timezoneText.textContent = timezone;
@@ -70,32 +80,44 @@ async function getOwnIp() {
   return ip;
 }
 
-async function getIpData(ip) {
+async function getIpData(input) {
+  let ip_search;
+  let domain;
+  let ipfy_fetch_link;
+
   setLoader(isLoading);
 
   const key = await getToken();
 
-  if (ip === undefined) {
-    ip = await getOwnIp();
+  if (input === undefined) {
+    ip_search = await getOwnIp();
+    ipfy_fetch_link = `https://geo.ipify.org/api/v1?apiKey=${key}&ipAddress=${ip_search}`;
+  } else {
+    if (isValidIpv4Addr(input)) {
+      ip_search = input;
+      ipfy_fetch_link = `https://geo.ipify.org/api/v1?apiKey=${key}&ipAddress=${ip_search}`;
+    } else {
+      if (isValidDomainName(input)) {
+        domain = input;
+        ipfy_fetch_link = `https://geo.ipify.org/api/v1?apiKey=${key}&domain=${domain}`;
+      }
+    }
   }
-
-  let ipfy_fetch_link = `https://geo.ipify.org/api/v1?apiKey=${key}&ipAddress=${ip}`;
 
   // Fetching the IPFY API with the given IP adress
   const ipfyRequest = await fetch(ipfy_fetch_link);
   const {
-    location: { country, region, city, timezone, lat, lng },
+    ip,
+    location: { country, city, timezone, lat, lng },
     isp,
   } = await ipfyRequest.json();
 
   // Updating UI
   setMapLocation(map, lat, lng);
-  updateInfo(ip, country, region, city, timezone, isp);
+  updateInfo(ip, country, city, timezone, isp);
 
   ipInput.value = "";
   isLoading = false;
 
   setLoader(isLoading);
 }
-
-// setTimeout(getIpData(), 1000);
