@@ -31,6 +31,7 @@ window.addEventListener("load", () => {
   getIpData();
 });
 
+// Map Initialization
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -42,11 +43,14 @@ L.control
   })
   .addTo(map);
 
+// Functions
 function setMapLocation(map, lat, lng) {
   map.setView([lat, lng], 13);
   setTimeout(function () {
     map.invalidateSize();
   }, 100);
+
+  var marker = L.marker([lat, lng]).addTo(map);
 }
 
 function isValidIpv4Addr(ip) {
@@ -66,6 +70,13 @@ function updateInfo(ip, country, city, timezone, isp) {
   ispText.textContent = isp;
 }
 
+function resetInfo() {
+  ipText.textContent = "";
+  locationText.textContent = "";
+  timezoneText.textContent = "";
+  ispText.textContent = "";
+}
+
 function setLoader(isLoading) {
   if (isLoading) {
     loaderSection.style.display = "flex";
@@ -77,10 +88,7 @@ function setLoader(isLoading) {
 }
 
 function resetError() {
-  // loaderSection.style.display = "none";
-  // mapSection.style.display = "none";
   errorContainer.classList.remove("active-error");
-
   info_boxes.forEach((box) => {
     box.style.display = "flex";
   });
@@ -106,6 +114,7 @@ async function getIpData(input) {
   let domain;
   let ipfy_fetch_link;
 
+  resetInfo();
   resetError();
   setLoader(isLoading);
 
