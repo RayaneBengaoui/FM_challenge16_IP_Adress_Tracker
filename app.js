@@ -15,10 +15,15 @@ const mapSection = document.querySelector("#map-container");
 // Variables
 let isLoading = true;
 
+// Event Listeners
 searchButton.addEventListener("click", () => {
   isLoading = true;
 
   getIpData(ipInput.value);
+});
+
+window.addEventListener("load", () => {
+  getIpData();
 });
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -38,9 +43,6 @@ function updateInfo(ip, country, region, city, timezone, isp) {
 }
 
 function setLoader(isLoading) {
-  console.log("CHECK");
-  console.log(loaderSection);
-  console.log(mapSection);
   if (isLoading) {
     loaderSection.style.display = "flex";
     mapSection.style.display = "none";
@@ -67,6 +69,7 @@ async function getOwnIp() {
 
 async function getIpData(ip) {
   setLoader(isLoading);
+
   const key = await getToken();
 
   if (ip === undefined) {
@@ -88,7 +91,8 @@ async function getIpData(ip) {
 
   ipInput.value = "";
   isLoading = false;
+
   setLoader(isLoading);
 }
 
-setTimeout(getIpData(), 1000);
+// setTimeout(getIpData(), 1000);
