@@ -33,6 +33,9 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 function setMapLocation(map, lat, lng) {
   map.setView([lat, lng], 13);
+  setTimeout(function () {
+    map.invalidateSize();
+  }, 100);
 }
 
 function updateInfo(ip, country, region, city, timezone, isp) {
