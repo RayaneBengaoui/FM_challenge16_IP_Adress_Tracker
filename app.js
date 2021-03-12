@@ -100,6 +100,12 @@ async function getIpData(input) {
       if (isValidDomainName(input)) {
         domain = input;
         ipfy_fetch_link = `https://geo.ipify.org/api/v1?apiKey=${key}&domain=${domain}`;
+      } else {
+        loaderSection.style.display = "none";
+        mapSection.style.display = "none";
+        window.alert("Enter a valid IP/domain");
+
+        return;
       }
     }
   }
