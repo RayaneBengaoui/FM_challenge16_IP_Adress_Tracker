@@ -1,5 +1,7 @@
 // DOM Elements
-var map = L.map("map-container");
+var map = L.map("map-container", {
+  zoomControl: false,
+});
 
 const ipText = document.querySelector(".ip");
 const locationText = document.querySelector(".location");
@@ -30,6 +32,12 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
+
+L.control
+  .zoom({
+    position: "bottomright",
+  })
+  .addTo(map);
 
 function setMapLocation(map, lat, lng) {
   map.setView([lat, lng], 13);
